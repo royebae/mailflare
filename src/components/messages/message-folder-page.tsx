@@ -350,8 +350,8 @@ export function MessageFolderPage({
 
 	return (
 		<div className="flex h-full min-h-0 flex-col">
-			<div className={`flex h-14 shrink-0 items-center justify-between border-b border-neutral-200 ${compact ? "px-4" : "px-6"}`}>
-				<div className="flex items-center gap-3 w-full">
+			<div className={`flex min-h-14 shrink-0 py-1 items-center justify-between border-b border-neutral-200 ${compact ? "px-4" : "px-6"}`}>
+				<div className="flex min-w-0 flex-1 items-center gap-3">
 					<Tooltip label="Select all visible messages">
 						<Checkbox
 							checked={allVisibleSelected}
