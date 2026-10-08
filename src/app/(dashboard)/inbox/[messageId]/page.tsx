@@ -107,8 +107,8 @@ export default function MessageDetailPage() {
       {message.direction === "inbound" && !message.read && (
         <MarkAsRead messageId={message.id} />
       )}
-      <div className="flex pt-3 pb-2.75 items-center justify-between px-2 border-b border-neutral-200 sticky top-0 bg-white">
-        <div className="flex-1" />
+      <div className="flex pt-3 pb-2.75 items-center justify-between px-2 border-b border-neutral-200 sticky top-0 z-30 bg-white">
+        <Link href={getMessageBackHref(message.direction, message.status)} aria-label="Back to mailbox" className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-neutral-600 hover:bg-neutral-100 lg:hidden"><ArrowLeft size={20} /></Link>
         {/* <div className="flex items-center flex-row gap-6">
 					<Link
 						href={getMessageBackHref(message.direction, message.status)}
@@ -130,12 +130,12 @@ export default function MessageDetailPage() {
           ownAddress={ownAddress}
         />
       </div>
-      <article className="px-6 py-4">
-        <h1 className="text-2xl text-neutral-900 mb-4">
+      <article className="px-4 md:px-6 py-4">
+        <h1 className="text-xl md:text-2xl break-words text-neutral-900 mb-4">
           {message.subject ?? "(no subject)"}
         </h1>
 
-        <div className="mb-6 flex items-start justify-between border-b border-neutral-100 pb-5">
+        <div className="mb-6 flex flex-wrap items-start justify-between gap-3 border-b border-neutral-100 pb-5">
           <div>
             <p className="text-sm text-neutral-900">
               <b>
@@ -168,11 +168,11 @@ export default function MessageDetailPage() {
             {dayjs(message.createdAt).format("MMM DD, YYYY, hh:mmA")}
           </p>
         </div>
-        <div className="prose max-w-none text-neutral-900">
+        <div className="prose min-w-0 max-w-full overflow-x-auto text-neutral-900">
           {htmlBody ? (
             <div className="mx-auto" dangerouslySetInnerHTML={{ __html: htmlBody }} />
           ) : (
-            <pre className="whitespace-pre-wrap text-sm text mx-auto">
+            <pre className="whitespace-pre-wrap break-words text-sm text mx-auto">
               {cloudAttachmentResult.content}
             </pre>
           )}

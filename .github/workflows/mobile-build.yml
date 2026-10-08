@@ -1,0 +1,26 @@
+name: Build Wuse mobile interface
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Build existing runtime without database migrations
+        run: npx opennextjs-cloudflare build
+      - name: Record TypeScript diagnostics
+        run: npx tsc --noEmit > typecheck.log 2>&1 || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wuse-mailflare-mobile-build
+          path: |
+            .open-next
+            typecheck.log
+          include-hidden-files: true

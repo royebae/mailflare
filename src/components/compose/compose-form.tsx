@@ -246,13 +246,13 @@ export function ComposeForm({
 					{toast.message}
 				</div>
 			)}
-			<form onSubmit={onSubmit} className={frameClass}>
-				<div className="flex h-9 items-center justify-between bg-neutral-800 px-4 text-sm font-medium text-white">
+			<form onSubmit={onSubmit} className={cn(frameClass, mode === "popup" && "max-md:inset-0 max-md:z-[120] max-md:h-dvh max-md:w-full max-md:rounded-none max-md:border-0 max-md:pt-[env(safe-area-inset-top)] max-md:pb-[env(safe-area-inset-bottom)]", mode === "page" && "max-md:min-h-0")}>
+				<div className="flex h-9 max-md:h-14 shrink-0 items-center justify-between bg-neutral-800 px-4 text-sm font-medium text-white">
 					<span>{loadingDraft ? "Loading draft" : draftId ? "Draft saved" : "New Message"}</span>
 					{mode === "popup" && (
 						<div className="flex items-center gap-3 text-neutral-300">
-							<Minimize2 className="h-4 w-4" />
-							<button type="button" onClick={onClose}>
+							<Minimize2 className="h-4 w-4 max-md:hidden" />
+							<button type="button" onClick={onClose} aria-label="Close composer" className="flex h-11 w-11 items-center justify-center">
 								<X className="h-4 w-4" />
 							</button>
 						</div>
@@ -338,7 +338,7 @@ export function ComposeForm({
 						))}
 					</div>
 				)}
-				<div className="flex items-center gap-3 border-t border-neutral-100 px-4 py-3">
+				<div className="flex flex-wrap shrink-0 items-center gap-3 border-t border-neutral-100 px-4 py-3">
 					<Input
 						ref={attachmentInput}
 						type="file"
@@ -357,7 +357,7 @@ export function ComposeForm({
 						Attach
 					</Button>
 					<span className="flex-1" />
-					<p className="text-xs text-neutral-500">{draftId ? "Saved to drafts" : "Autosaves as draft"}</p>
+					<p className="hidden md:block text-xs text-neutral-500">{draftId ? "Saved to drafts" : "Autosaves as draft"}</p>
 					<Button type="submit" disabled={loading || loadingDraft || !fromAddr} className="rounded-full px-5">
 						<Send className="h-4 w-4" />
 						{loading ? "Sending" : "Send"}

@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight, ListFilter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tooltip } from "@/components/ui/tooltip";
+import { useIsMobile } from "@/components/sidebar-mobile-utils";
 import { useCompose } from "@/components/compose/compose-context";
 import { useMailSearch } from "@/components/mail-search/mail-search-context";
 import { useSelectedMailbox } from "@/components/mailbox-provider";
@@ -70,7 +71,7 @@ function MessageListRow({
 		navigation.onNavigate(event, unread);
 	}
 
-	if (compact && config.folder !== "drafts") {
+	if (compact) {
 		return (
 			<div
 				className={`group grid grid-cols-[20px_minmax(0,1fr)] gap-3 border-l-2 px-4 py-3 transition-colors ${
@@ -93,7 +94,7 @@ function MessageListRow({
 					className="mt-1 h-4 w-4 rounded border-neutral-300"
 					aria-label={`Select message from ${party}`}
 				/>
-				<Link href={href} onClick={onMessageNavigate} className="min-w-0">
+				<Link href={href} onClick={(event) => { if (config.folder === "drafts") { event.preventDefault(); openDraftComposer(message.id); } else onMessageNavigate(event); }} className="min-w-0">
 					<span className="flex items-baseline justify-between gap-3">
 						<span className={getMessagePartyClassName(message, config.folder)}>
 							{party}
@@ -229,6 +230,7 @@ export function MessageFolderPage({
 	selectedMessageId,
 	selection,
 }: MessageFolderPageProps) {
+	const mobile = useIsMobile();
 	const { selectedMailbox, isLoading: mailboxesLoading } = useSelectedMailbox();
 	const { query } = useMailSearch();
 	const [offset, setOffset] = useState(0);
@@ -435,7 +437,7 @@ export function MessageFolderPage({
 						config={config}
 						selected={selectedIds.includes(message.id)}
 						active={message.id === selectedMessageId}
-						compact={compact}
+						compact={compact || mobile}
 						currentAccountName={currentAccountName}
 						onSelectedChange={updateSelectedMessage}
 						onMessageAction={(messageId, action) => runBulkMessageAction([messageId], action, action !== "read" && action !== "unread")}

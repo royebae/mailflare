@@ -11,6 +11,7 @@ import { MailboxProvider } from "@/components/mailbox-provider";
 import { MailboxSelector } from "@/components/mailbox-selector";
 import { LicenseIndicator } from "@/components/license-indicator";
 import { DashboardNav } from "@/components/dashboard-nav";
+import { SidebarAside, MobileMenuButton } from "@/components/sidebar-aside";
 import { SidebarProvider } from "@/components/sidebar-state";
 
 export default function DashboardLayout({
@@ -20,16 +21,17 @@ export default function DashboardLayout({
 }) {
   return (
     <AuthGuard>
-      <SidebarProvider>
+      <SidebarProvider mobileOverlay>
       <MailboxProvider>
         <ComposeProvider>
           <MailSearchProvider>
-            <div className="grid h-[100dvh] grid-cols-[var(--sidebar-width)_minmax(0,1fr)] overflow-hidden bg-[#f6f8fc] transition-[grid-template-columns] duration-200">
-              <aside className="min-h-0 overflow-y-auto overscroll-contain px-3 py-4 [scrollbar-gutter:stable]">
+            <div className="grid h-[100dvh] grid-cols-[minmax(0,1fr)] md:grid-cols-[var(--sidebar-width)_minmax(0,1fr)] overflow-hidden bg-[#f6f8fc] transition-[grid-template-columns] duration-200">
+              <SidebarAside>
                 <DashboardNav />
-              </aside>
+              </SidebarAside>
               <div className="flex min-h-0 min-w-0 flex-col">
-                <header className="flex h-16 w-full shrink-0 items-center gap-4 pr-4 text-sm">
+                <header className="flex h-16 w-full shrink-0 items-center gap-1 pr-2 md:gap-4 md:pr-4 text-sm">
+                  <MobileMenuButton />
                   <MailSearchInput />
                   <Link
                     href="/settings"
@@ -40,7 +42,7 @@ export default function DashboardLayout({
                   <LicenseIndicator />
                   <MailboxSelector />
                 </header>
-                <main className="min-h-0 flex-1 overflow-y-auto overscroll-contain scrollbar-gutter-stable">
+                <main className="min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain scrollbar-gutter-stable">
                   {children}
                 </main>
               </div>
